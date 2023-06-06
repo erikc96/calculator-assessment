@@ -4,10 +4,10 @@ class Calculator:
 
     # Clear or reset the calculator to its initial state.
     def clear(self):
-        self.current = 0  # the current value to be displayed on the calculator
-        self.pending_operation = None  # the operation that is yet to be performed
-        self.pending_value = None  # the value that is yet to be used in the operation
-        self.last_input_was_operator = False  # flag to indicate if the last input was an operator
+        self.current = 0
+        self.pending_operation = None
+        self.pending_value = None
+        self.last_input_was_operator = False
 
     # Handle the input command and perform the appropriate operation.
     def input(self, command):
@@ -46,7 +46,7 @@ class Calculator:
                     self.current = self.perform_operation(self.pending_operation, self.current, self.pending_value)
                     self.pending_operation = None
                     self.pending_value = None
-                    self.last_input_was_operator = False
+                self.last_input_was_operator = False
             elif token in ['+', '-', '*', '/']:  # if the token is an operator, update the pending operation
                 if self.pending_operation and self.pending_value is not None:
                     self.current = self.perform_operation(self.pending_operation, self.current, self.pending_value)
@@ -60,10 +60,11 @@ class Calculator:
             else:  # if the token is a number, update the current value or the pending value
                 try:
                     value = int(token)
-                    if self.last_input_was_operator:
+                    if self.last_input_was_operator and self.pending_value is None:
                         self.pending_value = value
+                    elif self.pending_value is not None:
                         self.current = self.perform_operation(self.pending_operation, self.current, self.pending_value)
-                        self.pending_value = None
+                        self.pending_value = value
                     else:
                         self.current = value
                     self.last_input_was_operator = False
