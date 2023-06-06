@@ -4,7 +4,7 @@ run:
 build:
 	docker build -t calculator .
 
-run-docker: build
+docker-run: build
 	docker run -it calculator
 
 test: build
